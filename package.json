@@ -1,0 +1,19 @@
+{
+  "name": "robot-arm-control",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev-https": "next dev --experimental-https",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "aframe": "1.6",
+    "bootstrap": "5",
+    "next": "15",
+    "react": "19",
+    "react-dom": "19"
+  }
+}
