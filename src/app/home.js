@@ -5,8 +5,6 @@ const THREE = window.AFRAME.THREE; // これで　AFRAME と　THREEを同時に
 import Controller from './controller.js'
 
 const joint_pos = {
-  waist:{x:0,y:0,z:0},
-  body:{x:0,y:0.025,z:0},
   right_1:{x:-0.052,y:0.268,z:0.000835},
   right_2:{x:-0.087,y:0.011,z:0},
   right_3:{x:-0.0064,y:-0.183,z:0},
@@ -25,6 +23,19 @@ const joint_pos = {
   left_7:{x:0,y:0,z:0.048},
   left_8:{x:0,y:-0.002,z:0.0409},
   left_9:{x:0,y:0,z:0.097},
+  body:{x:0,y:0.025,z:0},
+  waist:{x:0,y:0.76,z:0},
+  crotch:{x:0,y:0,z:0},
+  Leg_R_1:{x:-0.0645,y:-0.075,z:0},
+  Leg_R_2_1:{x:-0.052,y:-0.03,z:0.029},
+  Leg_R_2_2:{x:0,y:0,z:-0.0095},
+  Leg_R_3:{x:0,y:-0.3009,z:-0.08825},
+  Leg_R_4:{x:0,y:-0.257,z:-0.155},
+  Leg_L_1:{x:0.0645,y:-0.075,z:0},
+  Leg_L_2_1:{x:0.052,y:-0.03,z:0.029},
+  Leg_L_2_2:{x:0,y:0,z:-0.0095},
+  Leg_L_3:{x:0,y:-0.3009,z:-0.08825},
+  Leg_L_4:{x:0,y:-0.257,z:-0.155},
 }
 
 let registered = false
@@ -35,8 +46,6 @@ const z_vec_base = new THREE.Vector3(0,0,1).normalize()
 const object3D_map = {}
 const rotate_table = {}
 const rotvec_table = {
-  waist:y_vec_base,
-  body:y_vec_base,
   right_1:new THREE.Vector3(-1,0.28674538575881,0).normalize(),
   right_2:z_vec_base,
   right_3:y_vec_base,
@@ -55,12 +64,23 @@ const rotvec_table = {
   left_7:x_vec_base,
   left_8:z_vec_base,
   left_9:x_vec_base,
+  body:y_vec_base,
+  waist:y_vec_base,
+  crotch:y_vec_base,
+  Leg_R_1:x_vec_base,
+  Leg_R_2_1:z_vec_base,
+  Leg_R_2_2:y_vec_base,
+  Leg_R_3:x_vec_base,
+  Leg_R_4:x_vec_base,
+  Leg_L_1:x_vec_base,
+  Leg_L_2_1:z_vec_base,
+  Leg_L_2_2:y_vec_base,
+  Leg_L_3:x_vec_base,
+  Leg_L_4:x_vec_base,
 }
 let target_move_distance = 0
 const target_move_speed = (1000 / 0.5)
 const max_move_unit = {
-  waist:(1/180),
-  body:(1/180),
   right_1:(1/180),
   right_2:(1/180),
   right_3:(1/180),
@@ -79,6 +99,19 @@ const max_move_unit = {
   left_7:(1/180),
   left_8:(1/180),
   left_9:(1/180),
+  waist:(1/180),
+  body:(1/180),
+  crotch:(1/180),
+  Leg_R_1:(1/180),
+  Leg_R_2_1:(1/180),
+  Leg_R_2_2:(1/180),
+  Leg_R_3:(1/180),
+  Leg_R_4:(1/180),
+  Leg_L_1:(1/180),
+  Leg_L_2_1:(1/180),
+  Leg_L_2_2:(1/180),
+  Leg_L_3:(1/180),
+  Leg_L_4:(1/180),
 }
 
 function useRefState(initialValue=undefined,updateFunc=undefined) {
@@ -101,28 +134,39 @@ function useRefState(initialValue=undefined,updateFunc=undefined) {
 export default function Home(props) {
   const [update, set_update] = React.useState(0)
   const [rendered,set_rendered] = useRefState(false)
-  const [body_rotate,set_body_rotate] = useRefState(0)
-  const [r1_rotate,set_r1_rotate] = useRefState(0)
+  const [r1_rotate,set_r1_rotate] = useRefState(-120)
   const [r2_rotate,set_r2_rotate] = useRefState(-170)
   const [r3_rotate,set_r3_rotate] = useRefState(0)
   const [r4_rotate,set_r4_rotate] = useRefState(90)
   const [r5_rotate,set_r5_rotate] = useRefState(0)
-  const [r6_rotate,set_r6_rotate] = useRefState(0)
+  const [r6_rotate,set_r6_rotate] = useRefState(-90)
   const [r7_rotate,set_r7_rotate] = useRefState(0)
   const [r8_rotate,set_r8_rotate] = useRefState(0)
   const [r9_rotate,set_r9_rotate] = useRefState(0)
-  const [l1_rotate,set_l1_rotate] = useRefState(0)
+  const [l1_rotate,set_l1_rotate] = useRefState(120)
   const [l2_rotate,set_l2_rotate] = useRefState(170)
   const [l3_rotate,set_l3_rotate] = useRefState(0)
   const [l4_rotate,set_l4_rotate] = useRefState(90)
   const [l5_rotate,set_l5_rotate] = useRefState(0)
-  const [l6_rotate,set_l6_rotate] = useRefState(0)
+  const [l6_rotate,set_l6_rotate] = useRefState(90)
   const [l7_rotate,set_l7_rotate] = useRefState(0)
   const [l8_rotate,set_l8_rotate] = useRefState(0)
   const [l9_rotate,set_l9_rotate] = useRefState(0)
+  const [body_rotate,set_body_rotate] = useRefState(0)
+  const [crotch_rotate,set_crotch_rotate] = useRefState(0)
+  const [legR1_rotate,set_legR1_rotate] = useRefState(-20)
+  const [legR21_rotate,set_legR21_rotate] = useRefState(0)
+  const [legR22_rotate,set_legR22_rotate] = useRefState(0)
+  const [legR3_rotate,set_legR3_rotate] = useRefState(0)
+  const [legR4_rotate,set_legR4_rotate] = useRefState(0)
+  const [legL1_rotate,set_legL1_rotate] = useRefState(-20)
+  const [legL21_rotate,set_legL21_rotate] = useRefState(0)
+  const [legL22_rotate,set_legL22_rotate] = useRefState(0)
+  const [legL3_rotate,set_legL3_rotate] = useRefState(0)
+  const [legL4_rotate,set_legL4_rotate] = useRefState(0)
   const [c_pos_x,set_c_pos_x] = useRefState(0)
-  const [c_pos_y,set_c_pos_y] = useRefState(0.35)
-  const [c_pos_z,set_c_pos_z] = useRefState(0.8)
+  const [c_pos_y,set_c_pos_y] = useRefState(0.65)
+  const [c_pos_z,set_c_pos_z] = useRefState(1.2)
   const [c_deg_x,set_c_deg_x] = useRefState(0)
   const [c_deg_y,set_c_deg_y] = useRefState(0)
   const [c_deg_z,set_c_deg_z] = useRefState(0)
@@ -143,7 +187,7 @@ export default function Home(props) {
           const move_time_1 = target_move_distance * target_move_speed
           const wk_euler = new THREE.Quaternion().angleTo(
             current_data.start_quaternion.clone().invert().multiply(current_data.end_quaternion))
-          const move_time_2 = (toAngle(wk_euler) * max_move_unit[key]) * 1000
+          const move_time_2 = (Math.abs(toAngle(wk_euler)) * max_move_unit[key]) * 1000
           current_data.move_time = Math.max(move_time_1, move_time_2)
           current_data.endtime = current_data.starttime + current_data.move_time
         }
@@ -237,6 +281,50 @@ export default function Home(props) {
   },[l9_rotate])
 
   React.useEffect(() => {
+    rotate_table.crotch = { rot: crotch_rotate, first: true }
+  },[crotch_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_R_1 = { rot: legR1_rotate, first: true }
+  },[legR1_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_R_2_1 = { rot: legR21_rotate, first: true }
+  },[legR21_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_R_2_2 = { rot: legR22_rotate, first: true }
+  },[legR22_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_R_3 = { rot: legR3_rotate, first: true }
+  },[legR3_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_R_4 = { rot: legR4_rotate, first: true }
+  },[legR4_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_L_1 = { rot: legL1_rotate, first: true }
+  },[legL1_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_L_2_1 = { rot: legL21_rotate, first: true }
+  },[legL21_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_L_2_2 = { rot: legL22_rotate, first: true }
+  },[legL22_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_L_3 = { rot: legL3_rotate, first: true }
+  },[legL3_rotate])
+
+  React.useEffect(() => {
+    rotate_table.Leg_L_4 = { rot: legL4_rotate, first: true }
+  },[legL4_rotate])
+
+  React.useEffect(() => {
     if(!registered){
       registered = true
       set_rendered(true)
@@ -246,6 +334,7 @@ export default function Home(props) {
       AFRAME.registerComponent('obj-id', {
         schema: {type: 'string', default: ''},
         init: function () {
+          console.log(this.data)
           if(Object.hasOwn(object3D_map,this.data)){
             object3D_map[this.data] = this.el.object3D
             const wk = joint_pos[this.data]
@@ -289,6 +378,12 @@ export default function Home(props) {
     l1_rotate,set_l1_rotate,l2_rotate,set_l2_rotate,l3_rotate,set_l3_rotate,
     l4_rotate,set_l4_rotate,l5_rotate,set_l5_rotate,l6_rotate,set_l6_rotate,
     l7_rotate,set_l7_rotate,l8_rotate,set_l8_rotate,l9_rotate,set_l9_rotate,
+    crotch_rotate,set_crotch_rotate,
+    legR1_rotate,set_legR1_rotate,legL1_rotate,set_legL1_rotate,
+    legR21_rotate,set_legR21_rotate,legR22_rotate,set_legR22_rotate,
+    legL21_rotate,set_legL21_rotate,legL22_rotate,set_legL22_rotate,
+    legR3_rotate,set_legR3_rotate,legL3_rotate,set_legL3_rotate,
+    legR4_rotate,set_legR4_rotate,legL4_rotate,set_legL4_rotate,
     c_pos_x,set_c_pos_x,c_pos_y,set_c_pos_y,c_pos_z,set_c_pos_z,
     c_deg_x,set_c_deg_x,c_deg_y,set_c_deg_y,c_deg_z,set_c_deg_z
   }
@@ -327,8 +422,6 @@ const Assets = ()=>{
   return (
     <a-assets>
       {/*MODEL*/}
-      <a-asset-items id="waist" src="G1-EDU_Ultimate_B_waist.gltf" ></a-asset-items>
-      <a-asset-items id="body" src="G1-EDU_Ultimate_B_head_body.gltf" ></a-asset-items>
       <a-asset-items id="right_1" src="G1-EDU_Ultimate_B_right_1.gltf" ></a-asset-items>
       <a-asset-items id="right_2" src="G1-EDU_Ultimate_B_right_2.gltf" ></a-asset-items>
       <a-asset-items id="right_3" src="G1-EDU_Ultimate_B_right_3.gltf" ></a-asset-items>
@@ -347,6 +440,19 @@ const Assets = ()=>{
       <a-asset-items id="left_7" src="G1-EDU_Ultimate_B_left_7.gltf" ></a-asset-items>
       <a-asset-items id="left_8" src="G1-EDU_Ultimate_B_left_8.gltf" ></a-asset-items>
       <a-asset-items id="left_9" src="G1-EDU_Ultimate_B_left_9.gltf" ></a-asset-items>
+      <a-asset-items id="body" src="G1-EDU_Ultimate_B_head_body.gltf" ></a-asset-items>
+      <a-asset-items id="waist" src="G1-EDU_Ultimate_B_waist.gltf" ></a-asset-items>
+      <a-asset-items id="crotch" src="G1-EDU_Ultimate_B_crotch.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_R_1" src="G1-EDU_Ultimate_B_Leg_R_1.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_R_2_1" src="G1-EDU_Ultimate_B_Leg_R_2_1.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_R_2_2" src="G1-EDU_Ultimate_B_Leg_R_2_2.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_R_3" src="G1-EDU_Ultimate_B_Leg_R_3.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_R_4" src="G1-EDU_Ultimate_B_Leg_R_4.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_L_1" src="G1-EDU_Ultimate_B_Leg_L_1.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_L_2_1" src="G1-EDU_Ultimate_B_Leg_L_2_1.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_L_2_2" src="G1-EDU_Ultimate_B_Leg_L_2_2.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_L_3" src="G1-EDU_Ultimate_B_Leg_L_3.gltf" ></a-asset-items>
+      <a-asset-items id="Leg_L_4" src="G1-EDU_Ultimate_B_Leg_L_4.gltf" ></a-asset-items>
     </a-assets>
   )
 }
@@ -354,7 +460,7 @@ const Assets = ()=>{
 const Robot_data = (props)=>{
   const {visible=true} = props
   return (<>{visible?
-    <a-entity gltf-model="#waist" obj-id="waist" rotation={`0 0 0`}>
+    <a-entity gltf-model="#waist" obj-id="waist">
       <a-entity gltf-model="#body" obj-id="body">
         <a-entity gltf-model="#right_1" obj-id="right_1">
           <a-entity gltf-model="#right_2" obj-id="right_2">
@@ -386,6 +492,26 @@ const Robot_data = (props)=>{
                     </a-entity>
                   </a-entity>
                 </a-entity>
+              </a-entity>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+      <a-entity gltf-model="#crotch" obj-id="crotch">
+        <a-entity gltf-model="#Leg_R_1" obj-id="Leg_R_1">
+          <a-entity gltf-model="#Leg_R_2_1" obj-id="Leg_R_2_1">
+            <a-entity gltf-model="#Leg_R_2_2" obj-id="Leg_R_2_2">
+              <a-entity gltf-model="#Leg_R_3" obj-id="Leg_R_3">
+                <a-entity gltf-model="#Leg_R_4" obj-id="Leg_R_4"></a-entity>
+              </a-entity>
+            </a-entity>
+          </a-entity>
+        </a-entity>
+        <a-entity gltf-model="#Leg_L_1" obj-id="Leg_L_1">
+          <a-entity gltf-model="#Leg_L_2_1" obj-id="Leg_L_2_1">
+            <a-entity gltf-model="#Leg_L_2_2" obj-id="Leg_L_2_2">
+              <a-entity gltf-model="#Leg_L_3" obj-id="Leg_L_3">
+                <a-entity gltf-model="#Leg_L_4" obj-id="Leg_L_4"></a-entity>
               </a-entity>
             </a-entity>
           </a-entity>

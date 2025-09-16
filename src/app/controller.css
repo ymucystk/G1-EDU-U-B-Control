@@ -1,4 +1,13 @@
-.controller{
+.controller1{
+    position: fixed;
+    top: 10px;
+    right: 320px;
+    width: 300px;
+    background-color:rgba(192,192,192,0.2);
+    padding: 10px;
+    display: grid;
+}
+.controller2{
     position: fixed;
     top: 10px;
     right: 20px;
@@ -6,9 +15,6 @@
     background-color:rgba(192,192,192,0.2);
     padding: 10px;
     display: grid;
-    button {
-        margin: 5px;
-    }
 }
 .camera-controller{
     position: fixed;
@@ -18,7 +24,4 @@
     background-color:rgba(192,192,192,0.2);
     padding: 10px;
     display: grid;
-    button {
-        margin: 5px;
-    }
 }
