@@ -45,39 +45,6 @@ const z_vec_base = new THREE.Vector3(0,0,1).normalize()
 
 const object3D_map = {}
 const rotate_table = {}
-const rotvec_table = {
-  right_1:new THREE.Vector3(-1,0.28674538575881,0).normalize(),
-  right_2:z_vec_base,
-  right_3:y_vec_base,
-  right_4:x_vec_base,
-  right_5:z_vec_base,
-  right_6:y_vec_base,
-  right_7:x_vec_base,
-  right_8:z_vec_base,
-  right_9:x_vec_base,
-  left_1:new THREE.Vector3(1,0.28674538575881,0).normalize(),
-  left_2:z_vec_base,
-  left_3:y_vec_base,
-  left_4:x_vec_base,
-  left_5:z_vec_base,
-  left_6:y_vec_base,
-  left_7:x_vec_base,
-  left_8:z_vec_base,
-  left_9:x_vec_base,
-  body:y_vec_base,
-  waist:y_vec_base,
-  crotch:y_vec_base,
-  Leg_R_1:x_vec_base,
-  Leg_R_2_1:z_vec_base,
-  Leg_R_2_2:y_vec_base,
-  Leg_R_3:x_vec_base,
-  Leg_R_4:x_vec_base,
-  Leg_L_1:x_vec_base,
-  Leg_L_2_1:z_vec_base,
-  Leg_L_2_2:y_vec_base,
-  Leg_L_3:x_vec_base,
-  Leg_L_4:x_vec_base,
-}
 let target_move_distance = 0
 const target_move_speed = (1000 / 0.5)
 const max_move_unit = {
@@ -185,7 +152,7 @@ export default function Home(props) {
           current_data.first = false
           current_data.starttime = performance.now()
           current_data.start_quaternion = current_object3D.quaternion.clone()
-          current_data.end_quaternion = current_data.target_q //new THREE.Quaternion().setFromAxisAngle(rotvec_table[key], toRadian(current_data.target_q))
+          current_data.end_quaternion = current_data.target_q
           const move_time_1 = target_move_distance * target_move_speed
           const wk_euler = new THREE.Quaternion().angleTo(
             current_data.start_quaternion.clone().invert().multiply(current_data.end_quaternion))
