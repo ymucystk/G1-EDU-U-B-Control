@@ -18,7 +18,13 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"node48"
+			"name":"node48",
+			"rotation":[
+				-0.18223553895950317,
+				0,
+				0,
+				0.9832549095153809
+			]
 		}
 	],
 	"materials":[
@@ -61,23 +67,23 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":122895,
+			"count":122911,
 			"max":[
-				0.037626657634973526,
-				0.016258712857961655,
-				0.11903931200504303
+				0.03762662038207054,
+				0.016258709132671356,
+				0.11903930455446243
 			],
 			"min":[
-				-0.03789934888482094,
+				-0.037899311631917953,
 				-0.10015430301427841,
-				-0.08024092763662338
+				-0.080240897834301
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":122895,
+			"count":122911,
 			"type":"VEC3"
 		},
 		{
@@ -90,26 +96,26 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":1474740,
+			"byteLength":1474932,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1474740,
-			"byteOffset":1474740,
+			"byteLength":1474932,
+			"byteOffset":1474932,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":493344,
-			"byteOffset":2949480,
+			"byteOffset":2949864,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":3442824,
+			"byteLength":3443208,
 			"uri":"G1-EDU_Ultimate_B_Leg_L_4.bin"
 		}
 	]

@@ -18,7 +18,13 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"node21.001"
+			"name":"node21.001",
+			"rotation":[
+				-0.18223553895950317,
+				0,
+				0,
+				0.9832549095153809
+			]
 		}
 	],
 	"materials":[
@@ -61,23 +67,23 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":123606,
+			"count":123618,
 			"max":[
-				0.03784971311688423,
-				0.01625874452292919,
-				0.11903802305459976
+				0.03784966096282005,
+				0.016258709132671356,
+				0.11903800070285797
 			],
 			"min":[
-				-0.037676285952329636,
-				-0.10015427321195602,
-				-0.08024221658706665
+				-0.03767627105116844,
+				-0.10015419870615005,
+				-0.08024220913648605
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":123606,
+			"count":123618,
 			"type":"VEC3"
 		},
 		{
@@ -90,26 +96,26 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":1483272,
+			"byteLength":1483416,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1483272,
-			"byteOffset":1483272,
+			"byteLength":1483416,
+			"byteOffset":1483416,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":496248,
-			"byteOffset":2966544,
+			"byteOffset":2966832,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":3462792,
+			"byteLength":3463080,
 			"uri":"G1-EDU_Ultimate_B_Leg_R_4.bin"
 		}
 	]

@@ -6,8 +6,8 @@ export default function Controller(props) {
   const {body_rotate, crotch_rotate} = props
   const {r1_rotate, r2_rotate, r3_rotate, r4_rotate, r5_rotate, r6_rotate, r7_rotate, r8_rotate, r9_rotate} = props
   const {l1_rotate, l2_rotate, l3_rotate, l4_rotate, l5_rotate, l6_rotate, l7_rotate, l8_rotate, l9_rotate} = props
-  const {legR1_rotate, legR21_rotate, legR22_rotate, legR3_rotate, legR4_rotate} = props
-  const {legL1_rotate, legL21_rotate, legL22_rotate, legL3_rotate, legL4_rotate} = props
+  const {legR1_rotate, legR21_rotate, legR22_rotate, legR3_rotate, legR4_rotate, legR4z_rotate} = props
+  const {legL1_rotate, legL21_rotate, legL22_rotate, legL3_rotate, legL4_rotate, legL4z_rotate} = props
   const {c_pos_x, c_pos_y, c_pos_z} = props
   const {c_deg_x, c_deg_y, c_deg_z} = props
   
@@ -215,6 +215,14 @@ export default function Controller(props) {
     props.set_legR4_rotate(value)
   }
 
+  const set_legR4z_rotate = (e)=>{
+    let value = Number.parseFloat(e.target.value || 0)
+    if(Math.abs(value)===180){
+      value = value * -1
+    }
+    props.set_legR4z_rotate(value)
+  }
+
   const set_legL1_rotate = (e)=>{
     let value = Number.parseFloat(e.target.value || 0)
     if(Math.abs(value)===180){
@@ -253,6 +261,14 @@ export default function Controller(props) {
       value = value * -1
     }
     props.set_legL4_rotate(value)
+  }
+
+  const set_legL4z_rotate = (e)=>{
+    let value = Number.parseFloat(e.target.value || 0)
+    if(Math.abs(value)===180){
+      value = value * -1
+    }
+    props.set_legL4z_rotate(value)
   }
 
   const set_c_pos_x = (e)=>{
@@ -350,6 +366,8 @@ export default function Controller(props) {
           <div className="col-md-8"><input type="number" className="form-control" id="legR3_rotate_number" value={legR3_rotate} onChange={set_legR3_rotate} min={-180} max={180}/></div>
           <div className="col-md-4"><label htmlFor="legR4_rotate_number" className="form-label"><span className="form-control-plaintext">leg R4</span></label></div>
           <div className="col-md-8"><input type="number" className="form-control" id="legR4_rotate_number" value={legR4_rotate} onChange={set_legR4_rotate} min={-180} max={180}/></div>
+          <div className="col-md-4"><label htmlFor="legR4z_rotate_number" className="form-label"><span className="form-control-plaintext">leg R4z</span></label></div>
+          <div className="col-md-8"><input type="number" className="form-control" id="legR4z_rotate_number" value={legR4z_rotate} onChange={set_legR4z_rotate} min={-180} max={180}/></div>
         </div>
         <div className="row mb-2">
           <div className="col-md-4"><label htmlFor="legL1_rotate_number" className="form-label"><span className="form-control-plaintext">leg L1</span></label></div>
@@ -362,6 +380,8 @@ export default function Controller(props) {
           <div className="col-md-8"><input type="number" className="form-control" id="legL3_rotate_number" value={legL3_rotate} onChange={set_legL3_rotate} min={-180} max={180}/></div>
           <div className="col-md-4"><label htmlFor="legL4_rotate_number" className="form-label"><span className="form-control-plaintext">leg L4</span></label></div>
           <div className="col-md-8"><input type="number" className="form-control" id="legL4_rotate_number" value={legL4_rotate} onChange={set_legL4_rotate} min={-180} max={180}/></div>
+          <div className="col-md-4"><label htmlFor="legL4z_rotate_number" className="form-label"><span className="form-control-plaintext">leg L4z</span></label></div>
+          <div className="col-md-8"><input type="number" className="form-control" id="legL4z_rotate_number" value={legL4z_rotate} onChange={set_legL4z_rotate} min={-180} max={180}/></div>
         </div>
 
       </div>
