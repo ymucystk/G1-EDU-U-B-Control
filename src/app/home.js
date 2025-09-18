@@ -82,20 +82,23 @@ const max_move_unit = {
 }
 
 function useRefState(initialValue=undefined,updateFunc=undefined) {
-  const ref = React.useRef(initialValue);
-  const prev_ref = React.useRef(initialValue);
+  const ref0 = React.useRef(initialValue);
+  const ref1 = React.useRef(initialValue);
+  const reftbl = [ref0,ref1]
+  const idx = React.useRef(0);
   function setValue(arg){
-    prev_ref.current = ref.current
+    const newidx = idx.current===0?1:0
     if (typeof arg === 'function') {
-      ref.current = arg(value)
+      reftbl[newidx].current = arg(value)
     }else{
-      ref.current = arg
+      reftbl[newidx].current = arg
     }
+    idx.current = newidx
     if(updateFunc){
       updateFunc((v)=>v=v+1)
     }
   }
-  return [ref.current, setValue, ref, prev_ref.current];
+  return [reftbl[idx.current].current, setValue, reftbl[idx.current], reftbl[idx.current===0?1:0].current];
 }
 
 export default function Home(props) {
@@ -152,7 +155,6 @@ export default function Home(props) {
           current_data.first = false
           current_data.starttime = performance.now()
           current_data.start_quaternion = current_object3D.quaternion.clone()
-          current_data.end_quaternion = current_data.target_q
           const move_time_1 = target_move_distance * target_move_speed
           const wk_euler = new THREE.Quaternion().angleTo(
             current_data.start_quaternion.clone().invert().multiply(current_data.end_quaternion))
@@ -173,139 +175,131 @@ export default function Home(props) {
     }
   },[update])
  
+  const makeQuaternion = (axis,angle)=>new THREE.Quaternion().setFromAxisAngle(axis,toRadian(angle))
+
   React.useEffect(() => {
-    rotate_table.body = { target_q: new THREE.Quaternion().setFromAxisAngle(y_vec_base, toRadian(body_rotate)), first: true }
+    rotate_table.body = { end_quaternion: makeQuaternion(y_vec_base, body_rotate), first: true }
   },[body_rotate])
 
   React.useEffect(() => {
-    const wk_qua = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(-1,0.28674538575881,0).normalize(), toRadian(r1_rotate))
-    rotate_table.right_1 = { target_q: wk_qua, first: true }
+    const wk_qua = makeQuaternion(new THREE.Vector3(-1,0.28674538575881,0).normalize(), r1_rotate)
+    rotate_table.right_1 = { end_quaternion: wk_qua, first: true }
   },[r1_rotate])
 
   React.useEffect(() => {
-    rotate_table.right_2 = { target_q: new THREE.Quaternion().setFromAxisAngle(z_vec_base, toRadian(r2_rotate)), first: true }
+    rotate_table.right_2 = { end_quaternion: makeQuaternion(z_vec_base, r2_rotate), first: true }
   },[r2_rotate])
 
   React.useEffect(() => {
-    rotate_table.right_3 = { target_q: new THREE.Quaternion().setFromAxisAngle(y_vec_base, toRadian(r3_rotate)), first: true }
+    rotate_table.right_3 = { end_quaternion: makeQuaternion(y_vec_base, r3_rotate), first: true }
   },[r3_rotate])
 
   React.useEffect(() => {
-    rotate_table.right_4 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(r4_rotate)), first: true }
+    rotate_table.right_4 = { end_quaternion: makeQuaternion(x_vec_base, r4_rotate), first: true }
   },[r4_rotate])
 
   React.useEffect(() => {
-    rotate_table.right_5 = { target_q: new THREE.Quaternion().setFromAxisAngle(z_vec_base, toRadian(r5_rotate)), first: true }
+    rotate_table.right_5 = { end_quaternion: makeQuaternion(z_vec_base, r5_rotate), first: true }
   },[r5_rotate])
 
   React.useEffect(() => {
-    rotate_table.right_6 = { target_q: new THREE.Quaternion().setFromAxisAngle(y_vec_base, toRadian(r6_rotate)), first: true }
+    rotate_table.right_6 = { end_quaternion: makeQuaternion(y_vec_base, r6_rotate), first: true }
   },[r6_rotate])
 
   React.useEffect(() => {
-    rotate_table.right_7 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(r7_rotate)), first: true }
+    rotate_table.right_7 = { end_quaternion: makeQuaternion(x_vec_base, r7_rotate), first: true }
   },[r7_rotate])
 
   React.useEffect(() => {
-    rotate_table.right_8 = { target_q: new THREE.Quaternion().setFromAxisAngle(z_vec_base, toRadian(r8_rotate)), first: true }
+    rotate_table.right_8 = { end_quaternion: makeQuaternion(z_vec_base, r8_rotate), first: true }
   },[r8_rotate])
 
   React.useEffect(() => {
-    rotate_table.right_9 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(r9_rotate)), first: true }
+    rotate_table.right_9 = { end_quaternion: makeQuaternion(x_vec_base, r9_rotate), first: true }
   },[r9_rotate])
 
   React.useEffect(() => {
-    const wk_qua = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0.28674538575881,0).normalize(), toRadian(l1_rotate))
-    rotate_table.left_1 = { target_q: wk_qua, first: true }
+    const wk_qua = makeQuaternion(new THREE.Vector3(1,0.28674538575881,0).normalize(), l1_rotate)
+    rotate_table.left_1 = { end_quaternion: wk_qua, first: true }
   },[l1_rotate])
 
   React.useEffect(() => {
-    rotate_table.left_2 = { target_q: new THREE.Quaternion().setFromAxisAngle(z_vec_base, toRadian(l2_rotate)), first: true }
+    rotate_table.left_2 = { end_quaternion: makeQuaternion(z_vec_base, l2_rotate), first: true }
   },[l2_rotate])
 
   React.useEffect(() => {
-    rotate_table.left_3 = { target_q: new THREE.Quaternion().setFromAxisAngle(y_vec_base, toRadian(l3_rotate)), first: true }
+    rotate_table.left_3 = { end_quaternion: makeQuaternion(y_vec_base, l3_rotate), first: true }
   },[l3_rotate])
 
   React.useEffect(() => {
-    rotate_table.left_4 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(l4_rotate)), first: true }
+    rotate_table.left_4 = { end_quaternion: makeQuaternion(x_vec_base, l4_rotate), first: true }
   },[l4_rotate])
 
   React.useEffect(() => {
-    rotate_table.left_5 = { target_q: new THREE.Quaternion().setFromAxisAngle(z_vec_base, toRadian(l5_rotate)), first: true }
+    rotate_table.left_5 = { end_quaternion: makeQuaternion(z_vec_base, l5_rotate), first: true }
   },[l5_rotate])
 
   React.useEffect(() => {
-    rotate_table.left_6 = { target_q: new THREE.Quaternion().setFromAxisAngle(y_vec_base, toRadian(l6_rotate)), first: true }
+    rotate_table.left_6 = { end_quaternion: makeQuaternion(y_vec_base, l6_rotate), first: true }
   },[l6_rotate])
 
   React.useEffect(() => {
-    rotate_table.left_7 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(l7_rotate)), first: true }
+    rotate_table.left_7 = { end_quaternion: makeQuaternion(x_vec_base, l7_rotate), first: true }
   },[l7_rotate])
 
   React.useEffect(() => {
-    rotate_table.left_8 = { target_q: new THREE.Quaternion().setFromAxisAngle(z_vec_base, toRadian(l8_rotate)), first: true }
+    rotate_table.left_8 = { end_quaternion: makeQuaternion(z_vec_base, l8_rotate), first: true }
   },[l8_rotate])
 
   React.useEffect(() => {
-    rotate_table.left_9 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(l9_rotate)), first: true }
+    rotate_table.left_9 = { end_quaternion: makeQuaternion(x_vec_base, l9_rotate), first: true }
   },[l9_rotate])
 
   React.useEffect(() => {
-    rotate_table.crotch = { target_q: new THREE.Quaternion().setFromAxisAngle(y_vec_base, toRadian(crotch_rotate)), first: true }
+    rotate_table.crotch = { end_quaternion: makeQuaternion(y_vec_base, crotch_rotate), first: true }
   },[crotch_rotate])
 
   React.useEffect(() => {
-    rotate_table.Leg_R_1 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(legR1_rotate)), first: true }
+    rotate_table.Leg_R_1 = { end_quaternion: makeQuaternion(x_vec_base, legR1_rotate), first: true }
   },[legR1_rotate])
 
   React.useEffect(() => {
-    rotate_table.Leg_R_2_1 = { target_q: new THREE.Quaternion().setFromAxisAngle(z_vec_base, toRadian(legR21_rotate)), first: true }
+    rotate_table.Leg_R_2_1 = { end_quaternion: makeQuaternion(z_vec_base, legR21_rotate), first: true }
   },[legR21_rotate])
 
   React.useEffect(() => {
-    rotate_table.Leg_R_2_2 = { target_q: new THREE.Quaternion().setFromAxisAngle(y_vec_base, toRadian(legR22_rotate)), first: true }
+    rotate_table.Leg_R_2_2 = { end_quaternion: makeQuaternion(y_vec_base, legR22_rotate), first: true }
   },[legR22_rotate])
 
   React.useEffect(() => {
-    rotate_table.Leg_R_3 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(legR3_rotate)), first: true }
+    rotate_table.Leg_R_3 = { end_quaternion: makeQuaternion(x_vec_base, legR3_rotate), first: true }
   },[legR3_rotate])
 
   React.useEffect(() => {
     const wk_euler = new THREE.Euler(toRadian(legR4_rotate),0,toRadian(legR4z_rotate))
-    rotate_table.Leg_R_4 = { target_q: new THREE.Quaternion().setFromEuler(wk_euler), first: true }
-  },[legR4_rotate])
+    rotate_table.Leg_R_4 = { end_quaternion: new THREE.Quaternion().setFromEuler(wk_euler), first: true }
+  },[legR4_rotate,legR4z_rotate])
 
   React.useEffect(() => {
-    const wk_euler = new THREE.Euler(toRadian(legR4_rotate),0,toRadian(legR4z_rotate))
-    rotate_table.Leg_R_4 = { target_q: new THREE.Quaternion().setFromEuler(wk_euler), first: true }
-  },[legR4z_rotate])
-
-  React.useEffect(() => {
-    rotate_table.Leg_L_1 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(legL1_rotate)), first: true }
+    rotate_table.Leg_L_1 = { end_quaternion: makeQuaternion(x_vec_base, legL1_rotate), first: true }
   },[legL1_rotate])
 
   React.useEffect(() => {
-    rotate_table.Leg_L_2_1 = { target_q: new THREE.Quaternion().setFromAxisAngle(z_vec_base, toRadian(legL21_rotate)), first: true }
+    rotate_table.Leg_L_2_1 = { end_quaternion: makeQuaternion(z_vec_base, legL21_rotate), first: true }
   },[legL21_rotate])
 
   React.useEffect(() => {
-    rotate_table.Leg_L_2_2 = { target_q: new THREE.Quaternion().setFromAxisAngle(y_vec_base, toRadian(legL22_rotate)), first: true }
+    rotate_table.Leg_L_2_2 = { end_quaternion: makeQuaternion(y_vec_base, legL22_rotate), first: true }
   },[legL22_rotate])
 
   React.useEffect(() => {
-    rotate_table.Leg_L_3 = { target_q: new THREE.Quaternion().setFromAxisAngle(x_vec_base, toRadian(legL3_rotate)), first: true }
+    rotate_table.Leg_L_3 = { end_quaternion: makeQuaternion(x_vec_base, legL3_rotate), first: true }
   },[legL3_rotate])
 
   React.useEffect(() => {
     const wk_euler = new THREE.Euler(toRadian(legL4_rotate),0,toRadian(legL4z_rotate))
-    rotate_table.Leg_L_4 = { target_q: new THREE.Quaternion().setFromEuler(wk_euler), first: true }
-  },[legL4_rotate])
-
-  React.useEffect(() => {
-    const wk_euler = new THREE.Euler(toRadian(legL4_rotate),0,toRadian(legL4z_rotate))
-    rotate_table.Leg_L_4 = { target_q: new THREE.Quaternion().setFromEuler(wk_euler), first: true }
-  },[legL4z_rotate])
+    rotate_table.Leg_L_4 = { end_quaternion: new THREE.Quaternion().setFromEuler(wk_euler), first: true }
+  },[legL4_rotate,legL4z_rotate])
 
   React.useEffect(() => {
     if(!registered){
