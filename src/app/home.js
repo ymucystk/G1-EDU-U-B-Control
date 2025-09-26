@@ -86,19 +86,23 @@ function useRefState(initialValue=undefined,updateFunc=undefined) {
   const ref1 = React.useRef(initialValue);
   const reftbl = [ref0,ref1]
   const idx = React.useRef(0);
+  const rtnval = React.useRef(reftbl[idx.current].current);
+  const prevrtnval = React.useRef(reftbl[idx.current].current);
   function setValue(arg){
     const newidx = idx.current===0?1:0
     if (typeof arg === 'function') {
-      reftbl[newidx].current = arg(value)
+      reftbl[newidx].current = arg(reftbl[idx.current].current)
     }else{
       reftbl[newidx].current = arg
     }
+    rtnval.current = reftbl[newidx].current
+    prevrtnval.current = reftbl[idx.current].current
     idx.current = newidx
     if(updateFunc){
       updateFunc((v)=>v=v+1)
     }
   }
-  return [reftbl[idx.current].current, setValue, reftbl[idx.current], reftbl[idx.current===0?1:0].current];
+  return [rtnval.current, setValue, rtnval, prevrtnval.current];
 }
 
 export default function Home(props) {
